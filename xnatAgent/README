@@ -1,0 +1,5 @@
+python xnatQuery.py -s http://172.29.1.81:8080/x -u admin -p admin -r "/projects/Peach/subjects"
+python xnatQuery.py -s http://172.29.1.81:8080/x -u admin -p admin -r "/projects/Peach/resources"
+python xnatQuery.py -s http://172.29.1.81:8080/x -u admin -p admin -r "/projects/Peach/resources/4"
+python xnatQuery.py -s http://172.29.1.81:8080/x -u admin -p admin -r "/projects"
+

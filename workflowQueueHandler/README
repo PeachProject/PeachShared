@@ -1,0 +1,8 @@
+Example queue receiving cmd
+
+(s is optional)
+python "workflowQueueReceiver.py" --mh "172.29.1.87" --mu "peach" --pw "peachuser" --db "peach" --tbl "queue" --us "muessema@ad" --s 0
+
+Example removal cmd
+
+python "workflowQueueReceiver.py" --mh "172.29.1.87" --mu "peach" --pw "peachuser" --db "peach" --tbl "queue" --id 2

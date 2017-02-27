@@ -1,0 +1,4 @@
+*.pyc
+config/peachSharedConfig.py
+__pycache__/
+.arcconfig
