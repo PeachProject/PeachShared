@@ -13,8 +13,11 @@ temp_locations = {
 }
 
 servers = {
-    "kafka" : "<kafka_server>"
+    "kafka" : "<kafka_server>",
+    "ldap": "<ldap_server>"
 }
+
+service_temp = "<peach_service_temp>"
 
 ##########################################
 ##########################################
@@ -56,7 +59,7 @@ def schema_file(id):
     return schema_folder + "/" + schema_files.get(id, "-")
     
 def getTempFolder():
-    return '<<<TEMP FOLDER>>>'
+    return service_temp
 
 
 def get_server_address(id):
@@ -70,7 +73,7 @@ def get_service_temp_file():
     return getTempFolder() + "/services.avro"
 
 def get_ldap_server():
-    return "ldap1.dkfz-heidelberg.de"
+    return get_server_address("ldap")
 
 def get_default_method_name(key):
     return method_names[key]
