@@ -1,4 +1,4 @@
 *.pyc
-config/peachSharedConfig.py
+library/config/peachSharedConfig.py
 __pycache__/
 .arcconfig
