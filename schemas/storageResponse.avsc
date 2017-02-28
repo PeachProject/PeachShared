@@ -1,0 +1,110 @@
+{
+    "name": "StorageResponse",
+    "type": "record",
+    "fields": [
+        {
+            "name": "type",
+            "type": "int"
+        },
+        {
+            "name": "response",
+            "type":[
+                {
+                    "type": "record",
+                    "fields": [
+                        {
+                            "name": "storageItems",
+                            "type": {
+                                "type": "array",
+                                "items": {
+                                    "name": "StorageItem",
+                                    "type": "record",
+                                    "fields": [
+                                        {
+                                            "name": "type",
+                                            "type": "string"
+                                        },
+                                        {
+                                            "name": "extension",
+                                            "type": "string"
+                                        },
+                                        {
+                                            "name": "uri",
+                                            "type": "string"
+                                        },
+                                        {
+                                            "name": "rights",
+                                            "type": {
+                                                "type": "array",
+                                                "items": "string"
+                                            }
+                                        },
+                                        {
+                                            "name": "name",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "currentURI",
+                            "type": "string"
+                        },
+                        {
+                            "name": "hierarchy",
+                            "type": {
+                                "type": "array",
+                                "items": "string"
+                            }
+                        },
+                        {
+                            "name": "actions",
+                            "type": {
+                                "type": "array",
+                                "items": "string"
+                            }
+                        }
+                    ]
+                    
+                },
+                {
+                    "type": "record",
+                    "fields": [
+                        {
+                            "name": "tempFile",
+                            "type": "string"
+                        },
+                        {
+                            "name": "overwriteAction",
+                            "type": ["string", "null"]
+                        },
+                        {
+                            "name": "uri",
+                            "type": "string"
+                        },
+                        {
+                            "name": "extension",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "type": "record",
+                    "fields": [
+                        {
+                            "name": "errorMsg",
+                            "type": "string"
+                        },
+                        {
+                            "name": "errorCode",
+                            "type": "int"
+                        }
+                    ]
+                },
+                "null"
+            ]
+        }
+    ]
+}
+

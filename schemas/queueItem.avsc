@@ -1,0 +1,38 @@
+{
+    "name": "QueueItem",
+    "type": "record",
+    "fields": [
+        {
+            "name": "id",
+            "type": "int"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "file",
+            "type": "string"
+        },
+        {
+            "name": "progress",
+            "type": "int"
+        },
+        {
+            "name": "fromDate",
+            "type": "string"
+        },
+        {
+            "name": "finishedDate",
+            "type": "string"
+        },
+        {
+            "name": "priority",
+            "type": "int"
+        },
+        {
+            "name": "status",
+            "type": "int"
+        }
+    ]
+}

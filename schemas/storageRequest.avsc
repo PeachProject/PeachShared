@@ -1,0 +1,45 @@
+{
+    "name": "StorageRequest",
+    "type": "record",
+    "fields": [
+        {
+            "name": "connectionType",
+            "type": "string"
+        },
+        {
+            "name": "action",
+            "type": "string"
+        },
+        {
+            "name": "uri",
+            "type": "string"
+        },
+        {
+            "name": "meta",
+            "type" {
+                "type": "array",
+                "items": {
+                    "name": "MetaEntry",
+                    "type": "record",
+                    "fields": [
+                        {
+                            "name": "key",
+                            "type": "string"
+                        },
+                        {
+                            "name": "value",
+                            "type": [
+                                "string",
+                                "int",
+                                "boolean",
+                                "long",
+                                "float",
+                                "double"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
