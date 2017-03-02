@@ -4,7 +4,7 @@
 ##########################################
 ##########################################
 
-schema_folder = "<PeachClient_Git_Repo>/PeachShared/schemas"
+schema_folder = "<Parent>/PeachShared/schemas"
 
 temp_locations = {
     "workflow_temp": "<peach_temp_data>/workflow_temp",
