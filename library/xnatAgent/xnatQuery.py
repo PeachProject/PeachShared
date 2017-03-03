@@ -3,7 +3,7 @@ import argparse
 import json
 import time
 import hashlib
-from library.config.libraryConfig import get_temp_location
+from library.config.peachSharedConfig import get_temp_location
 
 def valid_uri(uri_json):
     """
