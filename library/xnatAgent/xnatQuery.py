@@ -3,7 +3,7 @@ import argparse
 import json
 import time
 import hashlib
-from library.config.peachSharedConfig import get_temp_location
+from library.config.libraryConfig import get_temp_location
 
 def valid_uri(uri_json):
     """
@@ -235,11 +235,30 @@ class XNATDownloader(Action):
     
     def download(self, uri_dict, meta):
         xnat_path = uri_dict.get("root")
+        keyword =  xnat_path[1:len(xnat_path)].split("/")[-2]
         xnat_data = XNATConnection(uri_dict.get("user"), uri_dict.get("password"), uri_dict.get("server")).select(xnat_path)
+        overwrite_action = "upload_file"
+        if keyword == "resources":
+            return ContentResponse(self.__download_resource(xnat_data, xnat_path), overwrite_action, URI.from_dict(uri_dict).as_json())           
+        elif keyword == "files":
+            return ContentResponse(self.__download_file(xnat_data, xnat_path), overwrite_action, URI.from_dict(uri_dict).as_json())
+        else:
+            #TODO Error code
+            return ErrorResponse(0, "Action view/download called for invalid selection.")
+
+    def __download_resource(self, xnat_data, xnat_path):
+        filepath_download_location = xnat_data.get(get_temp_location("download_files_temp"))
+        filename = filepath_download_location[1:len(filepath_download_location)].split("/")[-1]
+        local_filepath_target, temp_filename = as_local_filepath(filename, xnat_path)
+        import os
+        os.rename(filepath_download_location, local_filepath_target)
+        return temp_filename
+
+    def __download_file(self, xnat_data, xnat_path):
         filename = xnat_path[1:len(xnat_path)].split("/")[-1]
         local_filepath, temp_filename = as_local_filepath(filename, xnat_path)
-        xnat_data.get_copy(local_filepath)#xnat_data.file(filename).get_copy(local_filepath)
-        return ContentResponse(temp_filename, "upload_file", URI.from_dict(uri_dict).as_json())
+        xnat_data.get_copy(local_filepath)
+        return temp_filename
 
 class XNATNavigator(Action):
     """
@@ -297,7 +316,7 @@ class XNATNavigator(Action):
                 if hasattr(data, "files"):        
                     storage_items = storage_items + self.collection_storage_items(data.files(), uri_dict, "files", ["view", "delete"])
                 if hasattr(data, "resources"):
-                    storage_items = storage_items + self.collection_storage_items(data.resources(), uri_dict, "resources", ["open", "delete"])
+                    storage_items = storage_items + self.collection_storage_items(data.resources(), uri_dict, "resources", ["open", "delete", "view"])
                 if hasattr(data, "subjects"):
                     storage_items = storage_items + self.collection_storage_items(data.subjects(), uri_dict, "subjects", ["open", "delete"])
                 if type(data).__name__ == "Subject":
@@ -307,7 +326,6 @@ class XNATNavigator(Action):
                     storage_items = storage_items + self.collection_storage_items(data.scans(), uri_dict, "scans", ["open", "delete"])     
             else:
                 storage_items = storage_items + self.collection_storage_items(data, uri_dict, None, ["open", "delete"])            
-                #TODO set the correct action
             return StorageItemsResponse(storage_items, URI.from_dict(uri_dict).as_json(), ["parent", "upload"], self.__parse_hierarchy(uri_dict.get("root")))
         except Exception as e:
             #TODO meaningful error code
@@ -392,7 +410,6 @@ class Request():
 
 class Actions:
     def __init__(self):
-        #TODO support outcommented actions
         self.actions = ["open", "parent", "view", "delete", "upload", "upload_file"]     
          
     def is_valid_action(self, action):
