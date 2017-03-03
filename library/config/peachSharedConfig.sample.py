@@ -33,7 +33,7 @@ schema_files = {
 
 events = {
     "serviceList" : "Service_serviceListUpdated",
-    "sendWorkflow": "Worfklow_ExecuteWorkflow"
+    "sendWorkflow": "Workflow_ExecuteWorkflow"
 }
 
 storage_modules = [
