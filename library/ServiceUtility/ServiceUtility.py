@@ -3,21 +3,13 @@ import os
 import mysql.connector
 import time
 import shutil
+import library.config.peachSharedConfig
 
 
 #TODO one day this should be in a kind of config too
-mysql_info = {
-    "host": "172.29.1.87",
-    "user": "peach",
-    "password": "peachuser",
-    "database": "peach"
-}
+mysql_info = library.config.peachSharedConfig.get_mysql_info()
 
-temp_locations = {
-    "workflow_temp": "/home/henry/peach_temp_data/workflow_temp",
-    "download_workflow_temp": "/home/henry/peach_temp_data/download_temp/workflows",
-    "download_files_temp": "/home/henry/peach_temp_data/download_temp/files"
-}
+temp_locations = library.config.peachSharedConfig.get_temp_locations()
 
 def grabIndex(many, idx):
     if isinstance(many, list):

@@ -19,6 +19,13 @@ servers = {
 
 service_temp = "<peach_service_temp>"
 
+mysql_info = {
+    "host": "localhost",
+    "user": "peach",
+    "password": "peachuser",
+    "database": "peach"
+}
+
 ##########################################
 ##########################################
 ###### Secondary CONFIG SETTINGS #########
@@ -53,7 +60,8 @@ method_names = {
 ####### Don't change this part! ##########
 ##########################################
 ##########################################
-
+def get_mysql_info():
+    return mysql_info
 
 def schema_file(id):
     return schema_folder + "/" + schema_files.get(id, "-")
@@ -86,4 +94,7 @@ def get_storage_modules():
 
 
 def get_temp_location(temp_role):
-    return temp_locations[temp_role]
+    return get_temp_locations()[temp_role]
+
+def get_temp_locations():
+    return temp_locations
