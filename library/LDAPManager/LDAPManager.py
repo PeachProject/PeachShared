@@ -22,7 +22,7 @@ def check_login(username, password):
 
     connect = ldap.open(library.config.peachSharedConfig.get_ldap_server())
     try:
-        connect.simple_bind_s(username, password)
+        connect.simple_bind_s(library.config.peachSharedConfig.get_ldap_dn(username), password)
         return 0
     except ldap.LDAPError:
         connect.unbind_s()

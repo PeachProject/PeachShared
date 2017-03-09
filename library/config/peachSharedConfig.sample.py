@@ -26,6 +26,8 @@ mysql_info = {
     "database": "peach"
 }
 
+ldap_dn_template = "<LDAPDNTemplate>"
+
 ##########################################
 ##########################################
 ###### Secondary CONFIG SETTINGS #########
@@ -98,3 +100,6 @@ def get_temp_location(temp_role):
 
 def get_temp_locations():
     return temp_locations
+
+def get_ldap_dn(name):
+    return ldap_dn_template.format(name)
