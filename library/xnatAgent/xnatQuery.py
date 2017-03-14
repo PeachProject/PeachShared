@@ -313,6 +313,7 @@ class XNATNavigator(Action):
         items = []
         #TODO determine rights and set them properly
         for element in xnat_collection:
+            import xml.etree.ElementTree as ET
             ele_as_xml = ET.fromstring(element.get())
             xml_datatype = ele_as_xml.tag.split('}')[-1]
             xml_id = ele_as_xml.attrib.get("ID")
