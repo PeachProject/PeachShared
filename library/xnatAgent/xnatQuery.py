@@ -72,6 +72,13 @@ def unique_string(something):
     return str(hashlib.sha256(something).hexdigest()) + str(time.time()).replace(".", "")
 
 def as_local_filepath(filename, something_to_hash):
+    """
+    Based on a given filename and something to hash a local filepath is created as
+    well as a the temporary filename
+    @param filename as string
+    @param something_to_hash
+    @return a local filepath and a filename
+    """
     something_unique = unique_string(something_to_hash)
     abs_path = get_temp_location("download_files_temp")
     temp_filename = something_unique + "_" + filename
@@ -79,6 +86,12 @@ def as_local_filepath(filename, something_to_hash):
     return local_file_path, temp_filename
 
 def get_extension(filename):
+    """
+    Extracts the extension of a filename
+    @param filename as string
+    @return the extension as string or None
+    Please not that this will return (.gz if the extension is .tar.gz)
+    """
     name_split = filename.split(".")
     if len(name_split) > 1:
          return name_split[-1]
@@ -276,7 +289,9 @@ class XNATNavigator(Action):
             "None" : "file",
             "xnat:abstractResource" : "folder",
             "xnat:projectData" : "project",
+            "Project" : "project",
             "xnat:subjectData" : "subject",
+            "Subject" : "Subject",
             "xnat:ctSessionData" : "stack",
             "xnat:ctScanData" : "image_stack"
         }
@@ -296,13 +311,19 @@ class XNATNavigator(Action):
 
     def collection_storage_items(self, xnat_collection, uri_dict, peach_type, peach_actions):
         items = []
-        #TODO detrmine rights and set them properly
+        #TODO determine rights and set them properly
         for element in xnat_collection:
+            ele_as_xml = ET.fromstring(element.get())
+            xml_datatype = ele_as_xml.tag.split('}')[-1]
+            xml_id = ele_as_xml.attrib.get("ID")
             resource_sub_id = ""
             if peach_type is not None:
                 resource_sub_id = peach_type + "/"
-            resource_sub_id = resource_sub_id + element.id()
-            items.append(StorageItem(self.__global_type.get(str(element.datatype())), self.__copy_uri_append_sub_to_root(uri_dict, resource_sub_id).as_json(), peach_actions, element.label()).as_dict())
+            ele_id = xml_id
+            resource_sub_id = resource_sub_id + ele_id
+            ele_datatype = xml_datatype
+            ele_label = ele_id          
+            items.append(StorageItem(self.__global_type.get(ele_datatype), self.__copy_uri_append_sub_to_root(uri_dict, resource_sub_id).as_json(), peach_actions, ele_label).as_dict())
         return items
 
     def open(self, uri_dict, meta):
@@ -323,9 +344,9 @@ class XNATNavigator(Action):
                     if hasattr(data, "experiments"):
                         storage_items = storage_items + self.collection_storage_items(data.experiments(), uri_dict, "experiments", ["open", "delete"])
                 if hasattr(data, "scans"):
-                    storage_items = storage_items + self.collection_storage_items(data.scans(), uri_dict, "scans", ["open", "delete"])     
+                    storage_items = storage_items + self.collection_storage_items(data.scans(), uri_dict, "scans", ["open", "delete"])
             else:
-                storage_items = storage_items + self.collection_storage_items(data, uri_dict, None, ["open", "delete"])            
+                storage_items = storage_items + self.collection_storage_items(data, uri_dict, None, ["open", "delete"])
             return StorageItemsResponse(storage_items, URI.from_dict(uri_dict).as_json(), ["parent", "upload"], self.__parse_hierarchy(uri_dict.get("root")))
         except Exception as e:
             #TODO meaningful error code
@@ -456,7 +477,7 @@ class XNATConnection:
                             server = self.server,
                             user = self.user,
                             password = self.password,
-                            cachedir = '/tmp'
+                            cachedir = '/dev/null'
                             )
         return self.connection
 
